@@ -11,9 +11,9 @@ import com.sippulse.pet.service.ClienteService;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
-	
+
 	private ClienteRepository repository;
-	
+
 	@Autowired
 	public ClienteServiceImpl(ClienteRepository repository) {
 		super();
@@ -23,6 +23,21 @@ public class ClienteServiceImpl implements ClienteService {
 	@Override
 	public List<Cliente> findAll() {
 		return (List<Cliente>) repository.findAll();
+	}
+
+	@Override
+	public Cliente findById(Long id) {
+		return repository.findOne(id);
+	}
+
+	@Override
+	public Cliente save(Cliente cliente) {
+		return repository.save(cliente);
+	}
+
+	@Override
+	public void delete(Cliente entity) {
+		repository.delete(entity);
 	}
 
 }
