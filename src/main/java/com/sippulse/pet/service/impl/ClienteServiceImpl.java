@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sippulse.pet.entity.Cliente;
+import com.sippulse.pet.exception.NegocioException;
 import com.sippulse.pet.repository.ClienteRepository;
 import com.sippulse.pet.service.ClienteService;
 
@@ -26,7 +27,10 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public Cliente findById(Long id) {
+	public Cliente findById(Long id) throws NegocioException {
+		if (id == null) {
+			throw new NegocioException("Id do cliente não informado.");
+		}
 		return repository.findOne(id);
 	}
 
@@ -36,8 +40,20 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 
 	@Override
-	public void delete(Cliente entity) {
-		repository.delete(entity);
+	public Cliente update(Cliente cliente) throws NegocioException {
+		if (cliente.getCpf() == null) {
+			throw new NegocioException("Id do cliente não informado.");
+		}		
+		return repository.save(cliente);
 	}
+	
+	@Override
+	public void delete(Long id) throws NegocioException {
+		if (id == null) {
+			throw new NegocioException("Id do cliente não informado.");
+		}
+		repository.delete(id);
+	}
+
 
 }

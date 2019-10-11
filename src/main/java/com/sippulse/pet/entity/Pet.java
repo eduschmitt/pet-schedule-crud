@@ -8,13 +8,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of = {"cpfCliente", "nome"})
+@EqualsAndHashCode(of = {"cliente", "nome"})
 public class Pet implements Serializable {
 
 	private static final long serialVersionUID = -784982880627220710L;
 
 	private Long id;
-	private Long cpfCliente;
+	private Cliente cliente;
 	private String nome;
 	private TipoPet tipo;
 	private String raça;

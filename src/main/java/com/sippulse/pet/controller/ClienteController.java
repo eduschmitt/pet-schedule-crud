@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sippulse.pet.entity.Cliente;
+import com.sippulse.pet.exception.NegocioException;
 import com.sippulse.pet.service.ClienteService;
 
 @RestController
@@ -34,23 +35,41 @@ public class ClienteController {
 
 	@RequestMapping(value = "/cliente/{id}", method = RequestMethod.GET)
 	ResponseEntity<Cliente> findById(@PathVariable Long id) {
-		Cliente cliente = service.findById(id);
+		Cliente cliente = null;
+		try {
+			service.findById(id);
+		} catch (NegocioException e) {
+			//logar
+			// retornar 422 com mensagem
+		}
 		return cliente != null ? new ResponseEntity<Cliente>(cliente, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/cliente", method = RequestMethod.POST)
 	void save(@Valid @RequestBody Cliente cliente) {
-		service.save(cliente);
+		try {
+			service.save(cliente);			
+		} catch (NegocioException e) {
+			//logar
+			// retornar 422 com mensagem
+		}
 	}
 	
     @RequestMapping(value = "/cliente/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
-    	Cliente cliente = service.findById(id);
-    	if (cliente != null) {
-    		service.delete(cliente);
-    		return new ResponseEntity<>(HttpStatus.OK);
-    	}
+    	Cliente cliente = null;
+    	try {
+			cliente = service.findById(id);
+			if (cliente != null) {
+				service.delete(cliente);
+				return new ResponseEntity<>(HttpStatus.OK);
+			}
+		} catch (NegocioException e) {
+			//logar
+			// retornar 422 com mensagem
+		}
+    	
     	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
