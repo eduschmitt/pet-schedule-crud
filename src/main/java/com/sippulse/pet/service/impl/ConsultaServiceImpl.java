@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sippulse.pet.entity.Consulta;
-import com.sippulse.pet.exception.NegocioException;
-import com.sippulse.pet.exception.NegocioException.TipoExcecao;
+import com.sippulse.pet.exception.ServiceException;
+import com.sippulse.pet.exception.ServiceException.TipoExcecao;
 import com.sippulse.pet.repository.ConsultaRepository;
 import com.sippulse.pet.service.ConsultaService;
 
 /**
  * Camada de service para o CRUD de Consultas
+ * 
  * @author eduardo
  *
  */
@@ -34,6 +35,10 @@ public class ConsultaServiceImpl implements ConsultaService {
 	 */
 	@Override
 	public List<Consulta> findAll() {
+		List<Consulta> consultas = (List<Consulta>) repository.findAll();
+		if (consultas == null) {
+			throw new ServiceException("Nenhum registro encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+		}
 		return (List<Consulta>) repository.findAll();
 	}
 
@@ -41,15 +46,20 @@ public class ConsultaServiceImpl implements ConsultaService {
 	 * Busca um consulta pelo seu id.
 	 * 
 	 * @param Id do consulta.
-	 * @return Consulta encontrado com o id informado. 
-	 * @throws NegocioException
+	 * @return Consulta encontrado com o id informado.
+	 * @throws ServiceException
 	 */
 	@Override
-	public Consulta findById(Long id) throws NegocioException {
+	public Consulta findById(Long id) {
 		if (id == null) {
-			throw new NegocioException("Id do consulta não informado.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Id do registro não informado.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
-		return repository.findOne(id);
+		Consulta c = repository.findOne(id);
+		if (c == null) {
+			throw new ServiceException("Registro de id " + id + " não encontrado.",
+					TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+		}
+		return c;
 	}
 
 	/**
@@ -57,21 +67,22 @@ public class ConsultaServiceImpl implements ConsultaService {
 	 * 
 	 * @param Consulta a ser salvo ou atualizado.
 	 * @return Consulta salvo ou atualizado.
-	 * @throws NegocioException 
+	 * @throws ServiceException
 	 */
 	@Override
-	public Consulta save(Consulta consulta, Boolean isUpdate) throws NegocioException {
-		if (consulta.getId() == null) {
-			throw new NegocioException("Os atributos CPF e nome são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
-		}
-		Boolean consultaExiste = repository.exists(consulta.getId()); 
+	public Consulta save(Consulta consulta, Boolean isUpdate) {
+//		if (consulta.getCpf() == null || consulta.getNome() == null || consulta.getNome().trim().isEmpty()) {
+//			throw new ServiceException("Os atributos CPF e nome são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
+//		}
+		Boolean consultaExiste = repository.exists(consulta.getId());
 		if (isUpdate && !consultaExiste) {
-			throw new NegocioException("Consulta informado não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para atualização não existe.",
+					TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		if (!isUpdate && consultaExiste) {
-			throw new NegocioException("Consulta informado já existe.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Registro informado para inclusão já existe.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
-		
+
 		return repository.save(consulta);
 	}
 
@@ -79,18 +90,18 @@ public class ConsultaServiceImpl implements ConsultaService {
 	 * Realiza a exclusão de um consulta.
 	 * 
 	 * @param Id do consulta a ser excluído.
-	 * @throws NegocioException
+	 * @throws ServiceException
 	 */
 	@Override
-	public void delete(Long id) throws NegocioException {
+	public void delete(Long id) {
 		if (id == null) {
-			throw new NegocioException("Id do consulta não informado.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Id do registro não informado.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		if (!repository.exists(id)) {
-			throw new NegocioException("Consulta informado não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para exclusão não existe.",
+					TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		repository.delete(id);
 	}
-
 
 }

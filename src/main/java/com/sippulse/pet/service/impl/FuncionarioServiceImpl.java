@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sippulse.pet.entity.Funcionario;
-import com.sippulse.pet.exception.NegocioException;
-import com.sippulse.pet.exception.NegocioException.TipoExcecao;
+import com.sippulse.pet.exception.ServiceException;
+import com.sippulse.pet.exception.ServiceException.TipoExcecao;
 import com.sippulse.pet.repository.FuncionarioRepository;
 import com.sippulse.pet.service.FuncionarioService;
 
@@ -34,6 +34,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 */
 	@Override
 	public List<Funcionario> findAll() {
+		List<Funcionario> funcionarios = (List<Funcionario>) repository.findAll();
+		if (funcionarios == null) {
+			throw new ServiceException("Nenhum registro encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+		}
 		return (List<Funcionario>) repository.findAll();
 	}
 
@@ -42,14 +46,18 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * 
 	 * @param Id do funcionario.
 	 * @return Funcionario encontrado com o id informado. 
-	 * @throws NegocioException
+	 * @throws ServiceException
 	 */
 	@Override
-	public Funcionario findById(Long id) throws NegocioException {
+	public Funcionario findById(Long id) {
 		if (id == null) {
-			throw new NegocioException("Id do funcionario não informado.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Id do registro não informado.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
-		return repository.findOne(id);
+		Funcionario c = repository.findOne(id);
+		if (c == null) {
+			throw new ServiceException("Registro de id " + id + " não encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+		}
+		return c;
 	}
 
 	/**
@@ -57,19 +65,19 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * 
 	 * @param Funcionario a ser salvo ou atualizado.
 	 * @return Funcionario salvo ou atualizado.
-	 * @throws NegocioException 
+	 * @throws ServiceException 
 	 */
 	@Override
-	public Funcionario save(Funcionario funcionario, Boolean isUpdate) throws NegocioException {
+	public Funcionario save(Funcionario funcionario, Boolean isUpdate) {
 		if (funcionario.getCpf() == null || funcionario.getNome() == null || funcionario.getNome().trim().isEmpty()) {
-			throw new NegocioException("Os atributos CPF e nome são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Os atributos CPF e nome são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		Boolean funcionarioExiste = repository.exists(funcionario.getCpf()); 
 		if (isUpdate && !funcionarioExiste) {
-			throw new NegocioException("Funcionario informado não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para atualização não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		if (!isUpdate && funcionarioExiste) {
-			throw new NegocioException("Funcionario informado já existe.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Registro informado para inclusão já existe.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		
 		return repository.save(funcionario);
@@ -79,15 +87,15 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * Realiza a exclusão de um funcionario.
 	 * 
 	 * @param Id do funcionario a ser excluído.
-	 * @throws NegocioException
+	 * @throws ServiceException
 	 */
 	@Override
-	public void delete(Long id) throws NegocioException {
+	public void delete(Long id) {
 		if (id == null) {
-			throw new NegocioException("Id do funcionario não informado.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Id do registro não informado.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		if (!repository.exists(id)) {
-			throw new NegocioException("Funcionario informado não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para exclusão não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		repository.delete(id);
 	}

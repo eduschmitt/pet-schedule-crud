@@ -2,15 +2,15 @@ package com.sippulse.pet.service;
 
 import java.util.List;
 
-import com.sippulse.pet.exception.NegocioException;
+import com.sippulse.pet.exception.ServiceException;
 
 public interface CrudService<T, U> {
 	
 	List<T> findAll();
 
-	T findById(U id) throws NegocioException;
+	T findById(U id);
 	
-	T save(T entity, Boolean isUpdate) throws NegocioException;
+	T save(T entity, Boolean isUpdate);
 	
-	void delete(U id) throws NegocioException;
+	void delete(U id);
 }

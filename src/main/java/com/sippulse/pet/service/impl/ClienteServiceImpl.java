@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sippulse.pet.entity.Cliente;
-import com.sippulse.pet.exception.NegocioException;
-import com.sippulse.pet.exception.NegocioException.TipoExcecao;
+import com.sippulse.pet.exception.ServiceException;
+import com.sippulse.pet.exception.ServiceException.TipoExcecao;
 import com.sippulse.pet.repository.ClienteRepository;
 import com.sippulse.pet.service.ClienteService;
 
@@ -34,6 +34,10 @@ public class ClienteServiceImpl implements ClienteService {
 	 */
 	@Override
 	public List<Cliente> findAll() {
+		List<Cliente> clientes = (List<Cliente>) repository.findAll();
+		if (clientes == null) {
+			throw new ServiceException("Nenhum registro encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+		}
 		return (List<Cliente>) repository.findAll();
 	}
 
@@ -42,14 +46,18 @@ public class ClienteServiceImpl implements ClienteService {
 	 * 
 	 * @param Id do cliente.
 	 * @return Cliente encontrado com o id informado. 
-	 * @throws NegocioException
+	 * @throws ServiceException
 	 */
 	@Override
-	public Cliente findById(Long id) throws NegocioException {
+	public Cliente findById(Long id) {
 		if (id == null) {
-			throw new NegocioException("Id do cliente não informado.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Id do registro não informado.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
-		return repository.findOne(id);
+		Cliente c = repository.findOne(id);
+		if (c == null) {
+			throw new ServiceException("Registro de id " + id + " não encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+		}
+		return c;
 	}
 
 	/**
@@ -57,19 +65,19 @@ public class ClienteServiceImpl implements ClienteService {
 	 * 
 	 * @param Cliente a ser salvo ou atualizado.
 	 * @return Cliente salvo ou atualizado.
-	 * @throws NegocioException 
+	 * @throws ServiceException 
 	 */
 	@Override
-	public Cliente save(Cliente cliente, Boolean isUpdate) throws NegocioException {
+	public Cliente save(Cliente cliente, Boolean isUpdate) {
 		if (cliente.getCpf() == null || cliente.getNome() == null || cliente.getNome().trim().isEmpty()) {
-			throw new NegocioException("Os atributos CPF e nome são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Os atributos CPF e nome são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		Boolean clienteExiste = repository.exists(cliente.getCpf()); 
 		if (isUpdate && !clienteExiste) {
-			throw new NegocioException("Cliente informado não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para atualização não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		if (!isUpdate && clienteExiste) {
-			throw new NegocioException("Cliente informado já existe.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Registro informado para inclusão já existe.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		
 		return repository.save(cliente);
@@ -79,15 +87,15 @@ public class ClienteServiceImpl implements ClienteService {
 	 * Realiza a exclusão de um cliente.
 	 * 
 	 * @param Id do cliente a ser excluído.
-	 * @throws NegocioException
+	 * @throws ServiceException
 	 */
 	@Override
-	public void delete(Long id) throws NegocioException {
+	public void delete(Long id) {
 		if (id == null) {
-			throw new NegocioException("Id do cliente não informado.", TipoExcecao.VALIDACAO_CAMPOS);
+			throw new ServiceException("Id do registro não informado.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		if (!repository.exists(id)) {
-			throw new NegocioException("Cliente informado não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para exclusão não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		repository.delete(id);
 	}

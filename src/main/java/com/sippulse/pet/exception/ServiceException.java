@@ -1,12 +1,11 @@
 package com.sippulse.pet.exception;
 
-public class NegocioException extends Exception {
-
+public class ServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = -4945966094631068512L;
 	private TipoExcecao tipoExcecao;
 	
-	public NegocioException(String mensagem, TipoExcecao tipoExcecao) {
+	public ServiceException(String mensagem, TipoExcecao tipoExcecao) {
 		super(mensagem);
 		this.tipoExcecao = tipoExcecao;
 	}

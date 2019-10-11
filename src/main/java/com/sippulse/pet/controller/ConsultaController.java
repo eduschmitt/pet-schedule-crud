@@ -14,11 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sippulse.pet.entity.Consulta;
-import com.sippulse.pet.exception.NegocioException;
-import com.sippulse.pet.exception.NegocioException.TipoExcecao;
 import com.sippulse.pet.service.ConsultaService;
 
+/**
+ * Classe controller para as requisições relacionadas a Consulta
+ * 
+ * @author eduardo
+ *
+ */
 @RestController
+@RequestMapping("consultas")
 public class ConsultaController {
 
 	private ConsultaService service;
@@ -29,68 +34,29 @@ public class ConsultaController {
 		this.service = service;
 	}
 
-	@RequestMapping(value = "/consultas", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	List<Consulta> findAll() {
 		return service.findAll();
 	}
 
-	@RequestMapping(value = "/consulta/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	ResponseEntity<Consulta> findById(@PathVariable Long id) {
-		Consulta consulta = null;
-		try {
-			consulta = service.findById(id);
-		} catch (NegocioException e) {
-			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-		}
-		return consulta != null ? new ResponseEntity<Consulta>(consulta, HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Consulta>(service.findById(id), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/consulta", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	ResponseEntity<Consulta> save(@Valid @RequestBody Consulta consulta) {
-		Consulta consultaSalvo = null;
-		try {
-			consultaSalvo = service.save(consulta, false);		
-		} catch (NegocioException e) {
-			return retornarStatusCodeCorreto(e);
-		}
-		return new ResponseEntity<Consulta>(consultaSalvo, HttpStatus.OK);
+		return new ResponseEntity<Consulta>(service.save(consulta, false), HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/consulta", method = RequestMethod.PUT)
+	@RequestMapping(method = RequestMethod.PUT)
 	ResponseEntity<Consulta> update(@Valid @RequestBody Consulta consulta) {
-		Consulta consultaAtualizado = null;
-		try {
-			consultaAtualizado = service.save(consulta, true);
-		} catch (NegocioException e) {
-			return retornarStatusCodeCorreto(e);	
-		}
-		return new ResponseEntity<Consulta>(consultaAtualizado, HttpStatus.OK);			
+		return new ResponseEntity<Consulta>(service.save(consulta, true), HttpStatus.OK);
 	}
-	
-    @RequestMapping(value = "/consulta/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Consulta> delete(@PathVariable(value = "id") Long id) {
-    	try {
-			service.delete(id);
-		} catch (NegocioException e) {
-			return retornarStatusCodeCorreto(e);			
-		}
-    	
-    	return new ResponseEntity<>(HttpStatus.OK);			
-    }
-    
-    /**
-     * Método que define o código HTTP de retorno dependendo do tipo de exceção ocorrida.
-     * @param e Exceção de negócio ocorrida.
-     * @return ResponseEntity com HTTP Status code mais adequado.
-     */
-    private ResponseEntity<Consulta> retornarStatusCodeCorreto(NegocioException e) {
-		if (e.getTipoExcecao().equals(TipoExcecao.REGISTRO_NAO_ENCONTRADO)) {
-			return new ResponseEntity<Consulta>(HttpStatus.NOT_FOUND);				
-		} else if (e.getTipoExcecao().equals(TipoExcecao.VALIDACAO_CAMPOS)) {
-			return new ResponseEntity<Consulta>(HttpStatus.UNPROCESSABLE_ENTITY);
-		} else {
-			return new ResponseEntity<Consulta>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Consulta> delete(@PathVariable(value = "id") Long id) {
+		service.delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
