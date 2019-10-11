@@ -38,7 +38,7 @@ public class PetController {
 	ResponseEntity<Pet> findById(@PathVariable Long id) {
 		Pet pet = null;
 		try {
-			service.findById(id);
+			pet = service.findById(id);
 		} catch (NegocioException e) {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}

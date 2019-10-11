@@ -40,10 +40,10 @@ public class ClienteController {
 	}
 
 	@RequestMapping(value = "/cliente/{id}", method = RequestMethod.GET)
-	ResponseEntity<Cliente> findById(@PathVariable Long id) {
+	ResponseEntity findById(@PathVariable Long id) {
 		Cliente cliente = null;
 		try {
-			service.findById(id);
+			cliente = service.findById(id);
 		} catch (NegocioException e) {
 			return retornarStatusCodeCorreto(e);
 		}
@@ -52,7 +52,7 @@ public class ClienteController {
 	}
 
 	@RequestMapping(value = "/cliente", method = RequestMethod.POST)
-	ResponseEntity<Cliente> save(@Valid @RequestBody Cliente cliente) {
+	ResponseEntity save(@Valid @RequestBody Cliente cliente) {
 		Cliente clienteSalvo = null;
 		try {
 			clienteSalvo = service.save(cliente, false);		
@@ -89,13 +89,13 @@ public class ClienteController {
      * @param e Exceção de negócio ocorrida.
      * @return ResponseEntity com HTTP Status code mais adequado.
      */
-    private ResponseEntity<Cliente> retornarStatusCodeCorreto(NegocioException e) {
+    private ResponseEntity retornarStatusCodeCorreto(NegocioException e) {
 		if (e.getTipoExcecao().equals(TipoExcecao.REGISTRO_NAO_ENCONTRADO)) {
-			return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);				
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());				
 		} else if (e.getTipoExcecao().equals(TipoExcecao.VALIDACAO_CAMPOS)) {
-			return new ResponseEntity<Cliente>(HttpStatus.UNPROCESSABLE_ENTITY);
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
 		} else {
-			return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

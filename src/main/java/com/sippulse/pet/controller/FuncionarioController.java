@@ -38,7 +38,7 @@ public class FuncionarioController {
 	ResponseEntity<Funcionario> findById(@PathVariable Long id) {
 		Funcionario funcionario = null;
 		try {
-			service.findById(id);
+			funcionario = service.findById(id);
 		} catch (NegocioException e) {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}

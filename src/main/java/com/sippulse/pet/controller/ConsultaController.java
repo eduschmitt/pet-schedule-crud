@@ -38,7 +38,7 @@ public class ConsultaController {
 	ResponseEntity<Consulta> findById(@PathVariable Long id) {
 		Consulta consulta = null;
 		try {
-			service.findById(id);
+			consulta = service.findById(id);
 		} catch (NegocioException e) {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
