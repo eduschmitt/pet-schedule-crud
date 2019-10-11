@@ -18,6 +18,11 @@ import com.sippulse.pet.exception.NegocioException;
 import com.sippulse.pet.exception.NegocioException.TipoExcecao;
 import com.sippulse.pet.service.ClienteService;
 
+/**
+ * Classe controller para as requisições relacionadas a Cliente
+ * @author eduardo
+ *
+ */
 @RestController
 public class ClienteController {
 
@@ -40,7 +45,7 @@ public class ClienteController {
 		try {
 			service.findById(id);
 		} catch (NegocioException e) {
-			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+			return retornarStatusCodeCorreto(e);
 		}
 		return cliente != null ? new ResponseEntity<Cliente>(cliente, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
