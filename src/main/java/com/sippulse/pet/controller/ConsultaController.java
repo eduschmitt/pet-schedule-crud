@@ -13,63 +13,63 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sippulse.pet.entity.Pet;
+import com.sippulse.pet.entity.Consulta;
 import com.sippulse.pet.exception.NegocioException;
 import com.sippulse.pet.exception.NegocioException.TipoExcecao;
-import com.sippulse.pet.service.PetService;
+import com.sippulse.pet.service.ConsultaService;
 
 @RestController
-public class PetController {
+public class ConsultaController {
 
-	private PetService service;
+	private ConsultaService service;
 
 	@Autowired
-	public PetController(PetService service) {
+	public ConsultaController(ConsultaService service) {
 		super();
 		this.service = service;
 	}
 
-	@RequestMapping(value = "/pets", method = RequestMethod.GET)
-	List<Pet> findAll() {
+	@RequestMapping(value = "/consultas", method = RequestMethod.GET)
+	List<Consulta> findAll() {
 		return service.findAll();
 	}
 
-	@RequestMapping(value = "/pet/{id}", method = RequestMethod.GET)
-	ResponseEntity<Pet> findById(@PathVariable Long id) {
-		Pet pet = null;
+	@RequestMapping(value = "/consulta/{id}", method = RequestMethod.GET)
+	ResponseEntity<Consulta> findById(@PathVariable Long id) {
+		Consulta consulta = null;
 		try {
 			service.findById(id);
 		} catch (NegocioException e) {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		return pet != null ? new ResponseEntity<Pet>(pet, HttpStatus.OK)
+		return consulta != null ? new ResponseEntity<Consulta>(consulta, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@RequestMapping(value = "/pet", method = RequestMethod.POST)
-	ResponseEntity<Pet> save(@Valid @RequestBody Pet pet) {
-		Pet petSalvo = null;
+	@RequestMapping(value = "/consulta", method = RequestMethod.POST)
+	ResponseEntity<Consulta> save(@Valid @RequestBody Consulta consulta) {
+		Consulta consultaSalvo = null;
 		try {
-			petSalvo = service.save(pet, false);		
+			consultaSalvo = service.save(consulta, false);		
 		} catch (NegocioException e) {
 			return retornarStatusCodeCorreto(e);
 		}
-		return new ResponseEntity<Pet>(petSalvo, HttpStatus.OK);
+		return new ResponseEntity<Consulta>(consultaSalvo, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/pet", method = RequestMethod.PUT)
-	ResponseEntity<Pet> update(@Valid @RequestBody Pet pet) {
-		Pet petAtualizado = null;
+	@RequestMapping(value = "/consulta", method = RequestMethod.PUT)
+	ResponseEntity<Consulta> update(@Valid @RequestBody Consulta consulta) {
+		Consulta consultaAtualizado = null;
 		try {
-			petAtualizado = service.save(pet, true);
+			consultaAtualizado = service.save(consulta, true);
 		} catch (NegocioException e) {
 			return retornarStatusCodeCorreto(e);	
 		}
-		return new ResponseEntity<Pet>(petAtualizado, HttpStatus.OK);			
+		return new ResponseEntity<Consulta>(consultaAtualizado, HttpStatus.OK);			
 	}
 	
-    @RequestMapping(value = "/pet/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Pet> delete(@PathVariable(value = "id") Long id) {
+    @RequestMapping(value = "/consulta/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Consulta> delete(@PathVariable(value = "id") Long id) {
     	try {
 			service.delete(id);
 		} catch (NegocioException e) {
@@ -84,13 +84,13 @@ public class PetController {
      * @param e Exceção de negócio ocorrida.
      * @return ResponseEntity com HTTP Status code mais adequado.
      */
-    private ResponseEntity<Pet> retornarStatusCodeCorreto(NegocioException e) {
+    private ResponseEntity<Consulta> retornarStatusCodeCorreto(NegocioException e) {
 		if (e.getTipoExcecao().equals(TipoExcecao.REGISTRO_NAO_ENCONTRADO)) {
-			return new ResponseEntity<Pet>(HttpStatus.NOT_FOUND);				
+			return new ResponseEntity<Consulta>(HttpStatus.NOT_FOUND);				
 		} else if (e.getTipoExcecao().equals(TipoExcecao.VALIDACAO_CAMPOS)) {
-			return new ResponseEntity<Pet>(HttpStatus.UNPROCESSABLE_ENTITY);
+			return new ResponseEntity<Consulta>(HttpStatus.UNPROCESSABLE_ENTITY);
 		} else {
-			return new ResponseEntity<Pet>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Consulta>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

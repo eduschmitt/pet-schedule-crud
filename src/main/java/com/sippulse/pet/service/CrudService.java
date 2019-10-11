@@ -10,11 +10,7 @@ public interface CrudService<T, U> {
 
 	T findById(U id) throws NegocioException;
 	
-	T save(T entity) throws NegocioException;
-	
-	T update(T entity) throws NegocioException;
+	T save(T entity, Boolean isUpdate) throws NegocioException;
 	
 	void delete(U id) throws NegocioException;
-	
-
 }

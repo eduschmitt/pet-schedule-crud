@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sippulse.pet.entity.Cliente;
 import com.sippulse.pet.exception.NegocioException;
+import com.sippulse.pet.exception.NegocioException.TipoExcecao;
 import com.sippulse.pet.service.ClienteService;
 
 @RestController
@@ -39,37 +40,57 @@ public class ClienteController {
 		try {
 			service.findById(id);
 		} catch (NegocioException e) {
-			//logar
-			// retornar 422 com mensagem
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		return cliente != null ? new ResponseEntity<Cliente>(cliente, HttpStatus.OK)
 				: new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	@RequestMapping(value = "/cliente", method = RequestMethod.POST)
-	void save(@Valid @RequestBody Cliente cliente) {
+	ResponseEntity<Cliente> save(@Valid @RequestBody Cliente cliente) {
+		Cliente clienteSalvo = null;
 		try {
-			service.save(cliente);			
+			clienteSalvo = service.save(cliente, false);		
 		} catch (NegocioException e) {
-			//logar
-			// retornar 422 com mensagem
+			return retornarStatusCodeCorreto(e);
 		}
+		return new ResponseEntity<Cliente>(clienteSalvo, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/cliente", method = RequestMethod.PUT)
+	ResponseEntity<Cliente> update(@Valid @RequestBody Cliente cliente) {
+		Cliente clienteAtualizado = null;
+		try {
+			clienteAtualizado = service.save(cliente, true);
+		} catch (NegocioException e) {
+			return retornarStatusCodeCorreto(e);	
+		}
+		return new ResponseEntity<Cliente>(clienteAtualizado, HttpStatus.OK);			
 	}
 	
     @RequestMapping(value = "/cliente/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> delete(@PathVariable(value = "id") Long id) {
-    	Cliente cliente = null;
+    public ResponseEntity<Cliente> delete(@PathVariable(value = "id") Long id) {
     	try {
-			cliente = service.findById(id);
-			if (cliente != null) {
-				service.delete(cliente);
-				return new ResponseEntity<>(HttpStatus.OK);
-			}
+			service.delete(id);
 		} catch (NegocioException e) {
-			//logar
-			// retornar 422 com mensagem
+			return retornarStatusCodeCorreto(e);			
 		}
     	
-    	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	return new ResponseEntity<>(HttpStatus.OK);			
     }
+    
+    /**
+     * Método que define o código HTTP de retorno dependendo do tipo de exceção ocorrida.
+     * @param e Exceção de negócio ocorrida.
+     * @return ResponseEntity com HTTP Status code mais adequado.
+     */
+    private ResponseEntity<Cliente> retornarStatusCodeCorreto(NegocioException e) {
+		if (e.getTipoExcecao().equals(TipoExcecao.REGISTRO_NAO_ENCONTRADO)) {
+			return new ResponseEntity<Cliente>(HttpStatus.NOT_FOUND);				
+		} else if (e.getTipoExcecao().equals(TipoExcecao.VALIDACAO_CAMPOS)) {
+			return new ResponseEntity<Cliente>(HttpStatus.UNPROCESSABLE_ENTITY);
+		} else {
+			return new ResponseEntity<Cliente>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

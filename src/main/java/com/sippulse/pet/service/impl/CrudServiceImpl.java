@@ -26,13 +26,13 @@ public class CrudServiceImpl<T,U extends Serializable> implements CrudService<T,
 	}
 
 	@Override
-	public T save(T entity) {
+	public T save(T entity, Boolean isUpdate) {
 		return repository.save(entity);
 	}
 
 	@Override
-	public void delete(T entity) {
-		repository.delete(entity);
+	public void delete(U id) {
+		repository.delete(id);
 	}
 	
 	
