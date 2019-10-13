@@ -24,7 +24,7 @@ public class PetSchedule {
 	public Docket newsApi() {
 
 		return new Docket(DocumentationType.SWAGGER_2).groupName("cruds").apiInfo(apiInfo()).select()
-				.paths(regex("/clientes.*|/funcionarios.*|/pets.*|/consultas.*")).build();
+				.paths(regex("/login.*|/clientes.*|/funcionarios.*|/pets.*|/consultas.*")).build();
 	}
 
 	private ApiInfo apiInfo() {
