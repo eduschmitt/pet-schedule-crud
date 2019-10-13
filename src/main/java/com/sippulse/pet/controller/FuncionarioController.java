@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sippulse.pet.entity.Funcionario;
 import com.sippulse.pet.service.FuncionarioService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * Classe controller para as requisições relacionadas a Funcionario
  * 
@@ -34,26 +38,54 @@ public class FuncionarioController {
 		this.service = service;
 	}
 
+	@ApiOperation(value = "findAll")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success", response = List.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.GET)
 	List<Funcionario> findAll() {
 		return service.findAll();
 	}
 
+	@ApiOperation(value = "findById")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	ResponseEntity<Funcionario> findById(@PathVariable Long id) {
 		return new ResponseEntity<Funcionario>(service.findById(id), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "save")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.POST)
 	ResponseEntity<Funcionario> save(@Valid @RequestBody Funcionario funcionario) {
 		return new ResponseEntity<Funcionario>(service.save(funcionario, false), HttpStatus.CREATED);
 	}
 
+	@ApiOperation(value = "update")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success", response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.PUT)
 	ResponseEntity<Funcionario> update(@Valid @RequestBody Funcionario funcionario) {
 		return new ResponseEntity<Funcionario>(service.save(funcionario, true), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "delete")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success", response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Funcionario> delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);

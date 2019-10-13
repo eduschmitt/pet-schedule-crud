@@ -18,6 +18,10 @@ import com.sippulse.pet.entity.Pet;
 import com.sippulse.pet.service.PetService;
 import com.sippulse.pet.utils.View;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * Classe controller para as requisições relacionadas a Pet
  * 
@@ -36,30 +40,58 @@ public class PetController {
 		this.service = service;
 	}
 
+	@ApiOperation(value = "findAll")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success", response = List.class),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.GET)
 	@JsonView(View.PetComCliente.class)
 	List<Pet> findAll() {
 		return service.findAll();
 	}
 
+	@ApiOperation(value = "findById")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@JsonView(View.PetComCliente.class)
 	ResponseEntity<Pet> findById(@PathVariable Long id) {
 		return new ResponseEntity<Pet>(service.findById(id), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "save")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.POST)
 	@JsonView(View.PetComCliente.class)
 	ResponseEntity<Pet> save(@Valid @RequestBody Pet pet) {
 		return new ResponseEntity<Pet>(service.save(pet, false), HttpStatus.CREATED);
 	}
 
+	@ApiOperation(value = "update")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success", response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.PUT)
 	@JsonView(View.PetComCliente.class)
 	ResponseEntity<Pet> update(@Valid @RequestBody Pet pet) {
 		return new ResponseEntity<Pet>(service.save(pet, true), HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "delete")
+    @ApiResponses(value = { 
+            @ApiResponse(code = 200, message = "Success", response = List.class),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Pet> delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);
