@@ -18,8 +18,6 @@ import com.sippulse.pet.entity.Cliente;
 import com.sippulse.pet.service.ClienteService;
 import com.sippulse.pet.utils.View;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
