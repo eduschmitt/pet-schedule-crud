@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sippulse.pet.entity.Pet;
 import com.sippulse.pet.service.PetService;
+import com.sippulse.pet.utils.View;
 
 /**
  * Classe controller para as requisições relacionadas a Pet
@@ -35,21 +37,25 @@ public class PetController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
+	@JsonView(View.PetComCliente.class)
 	List<Pet> findAll() {
 		return service.findAll();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@JsonView(View.PetComCliente.class)
 	ResponseEntity<Pet> findById(@PathVariable Long id) {
 		return new ResponseEntity<Pet>(service.findById(id), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@JsonView(View.PetComCliente.class)
 	ResponseEntity<Pet> save(@Valid @RequestBody Pet pet) {
 		return new ResponseEntity<Pet>(service.save(pet, false), HttpStatus.CREATED);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
+	@JsonView(View.PetComCliente.class)
 	ResponseEntity<Pet> update(@Valid @RequestBody Pet pet) {
 		return new ResponseEntity<Pet>(service.save(pet, true), HttpStatus.OK);
 	}

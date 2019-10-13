@@ -7,4 +7,5 @@ import com.sippulse.pet.entity.Pet;
 
 @Repository
 public interface PetRepository extends CrudRepository<Pet, Long>{
+	
 }

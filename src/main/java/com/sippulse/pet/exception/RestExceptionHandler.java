@@ -73,6 +73,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request) {
         ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("Validation error");
+        apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
     
@@ -87,6 +88,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             javax.validation.ConstraintViolationException ex) {
         ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("Validation error");
+        apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
     
