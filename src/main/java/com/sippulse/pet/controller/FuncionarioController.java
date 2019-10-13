@@ -13,29 +13,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.sippulse.pet.entity.Pet;
-import com.sippulse.pet.service.PetService;
-import com.sippulse.pet.utils.View;
+import com.sippulse.pet.entity.Funcionario;
+import com.sippulse.pet.service.FuncionarioService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * Classe controller para as requisições relacionadas a Pet
+ * Classe controller para as requisições relacionadas a Funcionario
  * 
  * @author eduardo
  *
  */
 @RestController
-@RequestMapping("pets")
-public class PetController {
+@RequestMapping("funcionarios")
+public class FuncionarioController {
 
-	private PetService service;
+	private FuncionarioService service;
 
 	@Autowired
-	public PetController(PetService service) {
+	public FuncionarioController(FuncionarioService service) {
 		super();
 		this.service = service;
 	}
@@ -46,8 +44,7 @@ public class PetController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.GET)
-	@JsonView(View.PetComCliente.class)
-	List<Pet> findAll() {
+	List<Funcionario> findAll() {
 		return service.findAll();
 	}
 
@@ -56,11 +53,10 @@ public class PetController {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+            @ApiResponse(code = 500, message = "Failure")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	@JsonView(View.PetComCliente.class)
-	ResponseEntity<Pet> findById(@PathVariable Long id) {
-		return new ResponseEntity<Pet>(service.findById(id), HttpStatus.OK);
+	ResponseEntity<Funcionario> findById(@PathVariable Long id) {
+		return new ResponseEntity<Funcionario>(service.findById(id), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "save")
@@ -69,9 +65,8 @@ public class PetController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.POST)
-	@JsonView(View.PetComCliente.class)
-	ResponseEntity<Pet> save(@Valid @RequestBody Pet pet) {
-		return new ResponseEntity<Pet>(service.save(pet, false), HttpStatus.CREATED);
+	ResponseEntity<Funcionario> save(@Valid @RequestBody Funcionario funcionario) {
+		return new ResponseEntity<Funcionario>(service.save(funcionario, false), HttpStatus.CREATED);
 	}
 
 	@ApiOperation(value = "update")
@@ -81,9 +76,8 @@ public class PetController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.PUT)
-	@JsonView(View.PetComCliente.class)
-	ResponseEntity<Pet> update(@Valid @RequestBody Pet pet) {
-		return new ResponseEntity<Pet>(service.save(pet, true), HttpStatus.OK);
+	ResponseEntity<Funcionario> update(@Valid @RequestBody Funcionario funcionario) {
+		return new ResponseEntity<Funcionario>(service.save(funcionario, true), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "delete")
@@ -93,7 +87,7 @@ public class PetController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Pet> delete(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Funcionario> delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

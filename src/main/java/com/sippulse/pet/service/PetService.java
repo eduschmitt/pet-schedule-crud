@@ -1,5 +1,7 @@
 package com.sippulse.pet.service;
 
-public interface PetService {
-	// Interface para o Service
+import com.sippulse.pet.entity.Pet;
+
+public interface PetService extends CrudService<Pet, Long>{
+
 }
