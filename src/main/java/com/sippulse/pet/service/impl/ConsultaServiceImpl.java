@@ -101,6 +101,10 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	public List<Consulta> findByCliente(Long cpfCliente) {
+		if (cpfCliente == null) {
+			log.error("Cpf não informado.");
+			throw new ServiceException("Deve ser informado o cpf do cliente.", TipoExcecao.VALIDACAO_CAMPOS);
+		}
 		List<Consulta> consultas = repository.findAllByPetClienteCpf(cpfCliente);
 		if (consultas == null || consultas.isEmpty()) {
 			log.error("Nenhum registro encontrado.");
