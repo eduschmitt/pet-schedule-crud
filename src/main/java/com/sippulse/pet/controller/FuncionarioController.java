@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sippulse.pet.entity.Funcionario;
 import com.sippulse.pet.service.FuncionarioService;
+import com.sippulse.pet.utils.View;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -44,6 +46,7 @@ public class FuncionarioController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.GET)
+	@JsonView(View.Basic.class)
 	List<Funcionario> findAll() {
 		return service.findAll();
 	}
@@ -55,6 +58,7 @@ public class FuncionarioController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")})
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@JsonView(View.Basic.class)
 	ResponseEntity<Funcionario> findById(@PathVariable Long id) {
 		return new ResponseEntity<Funcionario>(service.findById(id), HttpStatus.OK);
 	}
@@ -65,6 +69,7 @@ public class FuncionarioController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.POST)
+	@JsonView(View.Basic.class)
 	ResponseEntity<Funcionario> save(@Valid @RequestBody Funcionario funcionario) {
 		return new ResponseEntity<Funcionario>(service.save(funcionario, false), HttpStatus.CREATED);
 	}
@@ -76,6 +81,7 @@ public class FuncionarioController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 500, message = "Failure")}) 
 	@RequestMapping(method = RequestMethod.PUT)
+	@JsonView(View.Basic.class)
 	ResponseEntity<Funcionario> update(@Valid @RequestBody Funcionario funcionario) {
 		return new ResponseEntity<Funcionario>(service.save(funcionario, true), HttpStatus.OK);
 	}

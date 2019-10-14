@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sippulse.pet.entity.Usuario;
+import com.sippulse.pet.security.AccountCredentials;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,7 +24,7 @@ public class LoginController {
 	 */
 	@ApiOperation("Token JWT é retornado no Header do response. Não é necessário informar Header no Request.")
 	@RequestMapping(value="/login", method = RequestMethod.POST)
-	public void fakeLogin(@ApiParam("username") @RequestBody Usuario usuario) {
+	public void fakeLogin(@ApiParam("username") @RequestBody AccountCredentials usuario) {
 	    throw new IllegalStateException("Esse método nunca será chamado, pois é implementado pelos filtros do Spring Security.");
 	}
 

@@ -6,6 +6,7 @@ import static com.sippulse.pet.utils.ValidacaoUtil.isValidString;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sippulse.pet.entity.Funcionario;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Camada de service para o CRUD de Funcionarios
+ * 
  * @author eduardo
  *
  */
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FuncionarioServiceImpl implements FuncionarioService {
 
 	private FuncionarioRepository repository;
-
+	
 	@Autowired
 	public FuncionarioServiceImpl(FuncionarioRepository repository) {
 		super();
@@ -53,7 +55,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * Busca um funcionario pelo seu id.
 	 * 
 	 * @param Id do funcionario.
-	 * @return Funcionario encontrado com o id informado. 
+	 * @return Funcionario encontrado com o id informado.
 	 * @throws ServiceException
 	 */
 	@Override
@@ -66,7 +68,8 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 		Funcionario c = repository.findOne(id);
 		if (c == null) {
 			log.error("Registro de id {} não encontrado.", id);
-			throw new ServiceException("Registro de id " + id + " não encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro de id " + id + " não encontrado.",
+					TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		return c;
 	}
@@ -76,27 +79,32 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * 
 	 * @param Funcionario a ser salvo ou atualizado.
 	 * @return Funcionario salvo ou atualizado.
-	 * @throws ServiceException 
+	 * @throws ServiceException
 	 */
 	@Override
 	public Funcionario save(Funcionario funcionario, Boolean isUpdate) {
 		log.debug("Invocando o método para {}.", isUpdate ? "atualização" : "inclusão");
-		if (funcionario.getCpf() == null || !isValidString(funcionario.getNome()) || funcionario.getTipoFuncionario() == null) {
-			throw new ServiceException("Os atributos CPF, nome e tipo são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
+		if (funcionario.getCpf() == null || !isValidString(funcionario.getNome())
+				|| !isValidString(funcionario.getSenha()) || funcionario.getTipoFuncionario() == null) {
+			throw new ServiceException("Os atributos CPF, nome, senha e tipo são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		if (!isValidCpf(funcionario.getCpf().toString())) {
 			throw new ServiceException("CPF inválido.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
-		Boolean funcionarioExiste = repository.exists(funcionario.getCpf()); 
+		Boolean funcionarioExiste = repository.exists(funcionario.getCpf());
 		if (isUpdate && !funcionarioExiste) {
 			log.error("Registro informado para atualização não existe. Id = {}.", funcionario.getCpf());
-			throw new ServiceException("Registro informado para atualização não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para atualização não existe.",
+					TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		if (!isUpdate && funcionarioExiste) {
 			log.error("Registro informado para inclusão já existe. Id = {}.", funcionario.getCpf());
 			throw new ServiceException("Registro informado para inclusão já existe.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
 		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		funcionario.setSenha(passwordEncoder.encode(funcionario.getSenha()));
+
 		return repository.save(funcionario);
 	}
 
@@ -115,10 +123,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 		}
 		if (!repository.exists(id)) {
 			log.error("Registro de id {} não encontrado.", id);
-			throw new ServiceException("Registro informado para exclusão não existe.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+			throw new ServiceException("Registro informado para exclusão não existe.",
+					TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
 		repository.delete(id);
 	}
-
 
 }

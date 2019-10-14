@@ -5,7 +5,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sippulse.pet.entity.enums.TipoFuncionario;
+import com.sippulse.pet.utils.View;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,6 +29,7 @@ public class Funcionario extends Pessoa {
 	private String senha;
 	
 	@Enumerated(EnumType.STRING)
+	@JsonView(View.Basic.class)
 	private TipoFuncionario tipoFuncionario;
 
 }
