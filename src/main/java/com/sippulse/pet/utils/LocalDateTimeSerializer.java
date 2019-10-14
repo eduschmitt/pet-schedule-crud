@@ -22,6 +22,9 @@ public class LocalDateTimeSerializer extends StdSerializer<LocalDateTime> {
         super(LocalDateTime.class);
     }
 
+    /**
+     * Serialização de um LocalDateTime
+     */
     @Override
     public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider sp) throws IOException, JsonProcessingException {
         gen.writeString(value.format(formatter));

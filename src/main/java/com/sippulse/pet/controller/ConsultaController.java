@@ -47,10 +47,8 @@ public class ConsultaController {
 	}
 
 	@ApiOperation(value = "findAll")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success", response = List.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = List.class),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(method = RequestMethod.GET)
 	@JsonView(View.ConsultaComPetVeterinario.class)
 	List<Consulta> findAll() {
@@ -58,11 +56,9 @@ public class ConsultaController {
 	}
 
 	@ApiOperation(value = "findById")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@JsonView(View.ConsultaComPetVeterinario.class)
 	ResponseEntity<Consulta> findById(@PathVariable Long id) {
@@ -70,25 +66,22 @@ public class ConsultaController {
 	}
 
 	@ApiOperation(value = "Busca consultas pelo veterinário e/ou data informados.")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(value = "/findByVeterinarioData", method = RequestMethod.GET)
 	@JsonView(View.ConsultaComPetVeterinario.class)
 	List<Consulta> findByVeterinarioData(@RequestParam(required = false) Long cpfVeterinario,
-			@RequestParam(required = false) @ApiParam(value="Data no formato DD/MM/YYYY") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataConsulta) {
-		log.info("Buscando consultas por veterinário e/ou data. cpfVeterinario: {}, dataConsulta: {}", cpfVeterinario, dataConsulta);
+			@RequestParam(required = false) @ApiParam(value = "Data no formato DD/MM/YYYY") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataConsulta) {
+		log.info("Buscando consultas por veterinário e/ou data. cpfVeterinario: {}, dataConsulta: {}", cpfVeterinario,
+				dataConsulta);
 		return service.findByVeterinarioData(cpfVeterinario, dataConsulta);
 	}
-	
+
 	@ApiOperation(value = "Busca consultas pelo cpf do Cliente informado.")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(value = "/findByCliente", method = RequestMethod.GET)
 	@JsonView(View.ConsultaComPetVeterinario.class)
 	List<Consulta> findByCliente(@RequestParam(required = true) Long cpfCliente) {
@@ -97,10 +90,8 @@ public class ConsultaController {
 	}
 
 	@ApiOperation(value = "save")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(method = RequestMethod.POST)
 	ResponseEntity<Consulta> save(@Valid @RequestBody Consulta consulta) {
 		service.save(consulta, false);
@@ -108,11 +99,9 @@ public class ConsultaController {
 	}
 
 	@ApiOperation(value = "update")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success", response = List.class),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = List.class),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(method = RequestMethod.PUT)
 	ResponseEntity<Consulta> update(@Valid @RequestBody Consulta consulta) {
 		service.save(consulta, true);
@@ -120,11 +109,9 @@ public class ConsultaController {
 	}
 
 	@ApiOperation(value = "delete")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success", response = List.class),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = List.class),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Consulta> delete(@PathVariable(value = "id") Long id) {
 		service.delete(id);

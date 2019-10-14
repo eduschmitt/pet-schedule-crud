@@ -8,7 +8,7 @@ import br.com.caelum.stella.validation.InvalidStateException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Classe utilitária.
+ * Classe utilitária para validações.
  * @author schmitt
  *
  */

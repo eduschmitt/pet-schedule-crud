@@ -16,6 +16,11 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Classe principal da aplicação Spring Boot.
+ * @author schmitt
+ *
+ */
 @SpringBootApplication
 @EnableSwagger2
 public class PetSchedule {
@@ -23,6 +28,10 @@ public class PetSchedule {
 		SpringApplication.run(PetSchedule.class, args);
 	}
 
+	/**
+	 * Bean de configuração do Swagger - Documentação da API REST.
+	 * @return
+	 */
 	@Bean
 	public Docket newsApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
@@ -39,6 +48,10 @@ public class PetSchedule {
 				.paths(regex("/login.*|/clientes.*|/funcionarios.*|/pets.*|/consultas.*")).build();
 	}
 	
+	/**
+	 * Método utilizado para gerar as informações exibidas na tela do Swagger.
+	 * @return
+	 */
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title("Aplicação CRUD - PetSchedule")
 				.description("Aplicação desenvolvida com Spring Boot para processo seletivo da SIPPulse.")

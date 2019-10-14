@@ -15,6 +15,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.sippulse.pet.service.AppUserDetailService;
 
+/**
+ * Classe de configuração do Spring Security para uso de Token JWT.
+ * @author schmitt
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -35,15 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
+	/**
+	 * Configuração para utilizar a base de dados para buscar os dados do usuário ao logar.
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
 		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-		// cria uma conta default
-//		auth.inMemoryAuthentication()
-//			.withUser("admin")
-//			.password("password")
-//			.roles("ADMIN");
 	}
 
 	@Bean
@@ -56,9 +59,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
 				"/configuration/security", "/swagger-ui.html", "/webjars/**");
 	}
-	
-//	public static void main(String[] args) {
-//		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//		System.out.println(passwordEncoder.encode("123456"));
-//	}
 }

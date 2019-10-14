@@ -11,7 +11,7 @@ import com.sippulse.pet.entity.Funcionario;
 import com.sippulse.pet.repository.FuncionarioRepository;
 
 /**
- *
+ * Classe para obtenção dos dados do funcionário que está logando.
  * @author schmitt
  */
 @Service

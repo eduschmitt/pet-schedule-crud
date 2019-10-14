@@ -1,5 +1,10 @@
 package com.sippulse.pet.exception;
 
+/**
+ * Tipo de exceção de serviço/negócio específica da aplicação.
+ * @author schmitt
+ *
+ */
 public class ServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = -4945966094631068512L;

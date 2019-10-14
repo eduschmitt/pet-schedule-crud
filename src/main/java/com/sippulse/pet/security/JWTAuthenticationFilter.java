@@ -12,6 +12,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
+/**
+ * Verificação do token informado em requisições na API Rest.
+ * @author schmitt
+ *
+ */
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
 	@Override

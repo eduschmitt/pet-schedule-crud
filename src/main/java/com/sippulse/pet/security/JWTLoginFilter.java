@@ -17,6 +17,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Classe utilizada para processar uma solicitação de login.
+ * @author schmitt
+ *
+ */
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	protected JWTLoginFilter(String url, AuthenticationManager authManager) {

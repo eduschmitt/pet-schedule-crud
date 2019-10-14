@@ -20,6 +20,11 @@ import com.sippulse.pet.utils.View;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Classe que representa o Pet.
+ * @author schmitt
+ *
+ */
 @Data
 @EqualsAndHashCode(of = {"cliente", "nome"})
 @Entity

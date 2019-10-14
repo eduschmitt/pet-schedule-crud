@@ -12,6 +12,11 @@ import org.springframework.security.core.Authentication;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+/**
+ * Classe para geração do JWT token
+ * @author schmitt
+ *
+ */
 public class TokenAuthenticationService {
 	
 	// EXPIRATION_TIME = 10 dias

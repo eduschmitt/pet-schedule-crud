@@ -5,6 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import com.sippulse.pet.entity.Cliente;
 
+/**
+ * Repository de Cliente.
+ * @author schmitt
+ *
+ */
 @Repository
 public interface ClienteRepository extends CrudRepository<Cliente, Long>{
 

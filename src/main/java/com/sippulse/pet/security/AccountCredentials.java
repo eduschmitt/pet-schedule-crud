@@ -1,5 +1,10 @@
 package com.sippulse.pet.security;
 
+/**
+ * Bean que representa as credenciais de acesso que devme ser informadas ao acessar o /login.
+ * @author schmitt
+ *
+ */
 public class AccountCredentials {
 	
 	private String username;

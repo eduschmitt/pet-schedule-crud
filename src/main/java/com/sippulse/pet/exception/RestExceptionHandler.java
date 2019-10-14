@@ -18,6 +18,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.sippulse.pet.exception.ServiceException.TipoExcecao;
 
+/**
+ * Classe que define handlers para vários tipos de exceção.
+ * @author schmitt
+ *
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {

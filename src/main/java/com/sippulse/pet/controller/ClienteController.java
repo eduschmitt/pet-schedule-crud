@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * Classe controller para as requisições relacionadas a Cliente
+ * Classe controller para as requisições relacionadas a Cliente.
  * 
  * @author eduardo
  *
@@ -41,10 +41,8 @@ public class ClienteController {
 	}
 
 	@ApiOperation(value = "findAll")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success", response = List.class),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = List.class),
+			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(method = RequestMethod.GET)
 	@JsonView(View.ClienteComPet.class)
 	List<Cliente> findAll() {
@@ -52,11 +50,9 @@ public class ClienteController {
 	}
 
 	@ApiOperation(value = "findById")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@JsonView(View.ClienteComPet.class)
 	ResponseEntity<Cliente> findById(@PathVariable Long id) {
@@ -64,10 +60,8 @@ public class ClienteController {
 	}
 
 	@ApiOperation(value = "save")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Created"),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(method = RequestMethod.POST)
 	@JsonView(View.ClienteComPet.class)
 	ResponseEntity<Cliente> save(@Valid @RequestBody Cliente cliente) {
@@ -75,11 +69,9 @@ public class ClienteController {
 	}
 
 	@ApiOperation(value = "update")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success", response = List.class),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = List.class),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(method = RequestMethod.PUT)
 	@JsonView(View.ClienteComPet.class)
 	ResponseEntity<Cliente> update(@Valid @RequestBody Cliente cliente) {
@@ -87,11 +79,9 @@ public class ClienteController {
 	}
 
 	@ApiOperation(value = "delete")
-    @ApiResponses(value = { 
-            @ApiResponse(code = 200, message = "Success", response = List.class),
-            @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
-            @ApiResponse(code = 500, message = "Failure")}) 
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = List.class),
+			@ApiResponse(code = 400, message = "Bad Request"), @ApiResponse(code = 404, message = "Not Found"),
+			@ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Cliente> delete(@PathVariable Long id) {
 		service.delete(id);

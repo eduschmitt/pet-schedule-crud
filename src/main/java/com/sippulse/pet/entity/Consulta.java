@@ -22,6 +22,11 @@ import com.sippulse.pet.utils.View;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Classe que representa uma consulta agendada para um pet com um veterinário.
+ * @author schmitt
+ *
+ */
 @Data
 @EqualsAndHashCode(of = {"veterinario", "pet", "dataHora"})
 @Entity
