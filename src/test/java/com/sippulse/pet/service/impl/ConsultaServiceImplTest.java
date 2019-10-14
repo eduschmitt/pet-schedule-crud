@@ -1,7 +1,9 @@
 package com.sippulse.pet.service.impl;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.sippulse.pet.entity.Consulta;
+import com.sippulse.pet.entity.Funcionario;
+import com.sippulse.pet.entity.Pet;
 import com.sippulse.pet.exception.ServiceException;
 import com.sippulse.pet.repository.ConsultaRepository;
 import com.sippulse.pet.repository.FuncionarioRepository;
@@ -23,7 +27,10 @@ import com.sippulse.pet.repository.PetRepository;
 @RunWith(MockitoJUnitRunner.class)
 public class ConsultaServiceImplTest {
 	
-	Long idTesteOk = 8421886657l; 
+	Long idTesteOk = 1l; 
+	Funcionario veterinarioOk = new Funcionario();
+	Pet petOk = new Pet();
+	LocalDateTime ldtAgora = LocalDateTime.now();
 
 	@Mock
 	private ConsultaRepository consultaRepository;
@@ -38,7 +45,9 @@ public class ConsultaServiceImplTest {
 	private ConsultaServiceImpl consultaService;
 	
 	@Before
-	public void setUp() {		
+	public void setUp() {	
+		veterinarioOk.setCpf(12345678901l);
+		petOk.setId(1l);
 		consultaService = new ConsultaServiceImpl(consultaRepository, petRespository, funcionarioRepository);
 		MockitoAnnotations.initMocks(consultaService);
 	}
@@ -46,7 +55,7 @@ public class ConsultaServiceImplTest {
 	
 	@Test
 	public void findAll_EncontraUmRegistro_RetornoOk() {
-		when(consultaRepository.findAll()).thenReturn(retornaLista(idTesteOk));		
+		when(consultaRepository.findAll()).thenReturn(retornaLista(idTesteOk, veterinarioOk, petOk, ldtAgora));		
 		List<Consulta> consultasRetornados = consultaService.findAll();		
 		Assert.assertEquals(1, consultasRetornados.size());
 	}
@@ -65,7 +74,7 @@ public class ConsultaServiceImplTest {
 	
 	@Test
 	public void findById_EncontraRegistro_RetornoOk() {
-		when(consultaRepository.findOne(idTesteOk)).thenReturn(retornaConsulta(idTesteOk));
+		when(consultaRepository.findOne(idTesteOk)).thenReturn(retornaConsulta(idTesteOk, veterinarioOk, petOk, ldtAgora));
 		Consulta consulta = consultaService.findById(idTesteOk);
 		Assert.assertEquals(idTesteOk, consulta.getId());
 	}
@@ -94,7 +103,19 @@ public class ConsultaServiceImplTest {
 	}
 	
 	
-	
+//	@Test
+//	public void save_SalvandoConsulta_RetornoOk() {
+//		
+//		when(consultaRepository.exists(idTesteOk)).thenReturn(false);
+//		when(consultaRepository.save(any(Consulta.class))).thenReturn(retornaConsulta(idTesteOk, veterinarioOk, petOk, ldtAgora));
+//		Consulta consulta = null;
+//		try {
+//			consulta = consultaService.save(retornaConsulta(null, veterinarioOk, petOk, ldtAgora), false);			
+//		} catch (ServiceException e) {			
+//			Assert.fail("Não poderia lançar uma exceção.");
+//		}
+//		Assert.assertEquals(idTesteOk, consulta.getId());
+//	}
 	
 	
 	
@@ -135,13 +156,16 @@ public class ConsultaServiceImplTest {
 	
 	
 	
-	private List<Consulta> retornaLista(Long id) {
-		return Arrays.asList(retornaConsulta(id));
+	private List<Consulta> retornaLista(Long id, Funcionario veterinario, Pet pet, LocalDateTime dataHora) {
+		return Arrays.asList(retornaConsulta(id, veterinario, pet, dataHora));
 	}
 	
-	private Consulta retornaConsulta(Long id) {
+	private Consulta retornaConsulta(Long id, Funcionario veterinario, Pet pet, LocalDateTime dataHora) {
 		Consulta consulta = new Consulta();
 		consulta.setId(id);
+		consulta.setVeterinario(veterinario);
+		consulta.setPet(pet);
+		consulta.setDataHora(dataHora);
 		
 		return consulta;
 	}

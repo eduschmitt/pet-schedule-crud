@@ -1,5 +1,6 @@
 package com.sippulse.pet.service.impl;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.sippulse.pet.entity.Cliente;
 import com.sippulse.pet.entity.Pet;
 import com.sippulse.pet.exception.ServiceException;
 import com.sippulse.pet.repository.PetRepository;
@@ -22,6 +24,8 @@ import com.sippulse.pet.repository.PetRepository;
 public class PetServiceImplTest {
 	
 	Long idTesteOk = 1l; 
+	String nomeOk = "PET";
+	Cliente clienteOk = new Cliente();
 
 	@Mock
 	private PetRepository petRepository;
@@ -30,7 +34,8 @@ public class PetServiceImplTest {
 	private PetServiceImpl petService;
 	
 	@Before
-	public void setUp() {		
+	public void setUp() {	
+		clienteOk.setCpf(12345678901l);
 		petService = new PetServiceImpl(petRepository);
 		MockitoAnnotations.initMocks(petService);
 	}
@@ -38,7 +43,7 @@ public class PetServiceImplTest {
 	
 	@Test
 	public void findAll_EncontraUmRegistro_RetornoOk() {
-		when(petRepository.findAll()).thenReturn(retornaLista(idTesteOk));		
+		when(petRepository.findAll()).thenReturn(retornaLista(idTesteOk, nomeOk, clienteOk));		
 		List<Pet> petsRetornados = petService.findAll();		
 		Assert.assertEquals(1, petsRetornados.size());
 	}
@@ -57,7 +62,7 @@ public class PetServiceImplTest {
 	
 	@Test
 	public void findById_EncontraRegistro_RetornoOk() {
-		when(petRepository.findOne(idTesteOk)).thenReturn(retornaPet(idTesteOk));
+		when(petRepository.findOne(idTesteOk)).thenReturn(retornaPet(idTesteOk, nomeOk, clienteOk));
 		Pet pet = petService.findById(idTesteOk);
 		Assert.assertEquals(idTesteOk, pet.getId());
 	}
@@ -85,10 +90,76 @@ public class PetServiceImplTest {
 		Assert.fail("Deveria ter lançado exceção.");
 	}
 	
+	@Test
+	public void save_SalvandoPet_RetornoOk() {
+		when(petRepository.exists(idTesteOk)).thenReturn(false);
+		when(petRepository.save(any(Pet.class))).thenReturn(retornaPet(idTesteOk, nomeOk, clienteOk));
+		Pet pet = null;
+		try {
+			pet = petService.save(retornaPet(null, nomeOk, clienteOk), false);			
+		} catch (ServiceException e) {
+			Assert.fail("Não poderia lançar uma exceção.");
+		}
+		Assert.assertEquals(idTesteOk, pet.getId());
+	}
 	
 	
+	@Test
+	public void save_SalvandoComNomeNulo_LancaExcecao() {		
+		try {
+			petService.save(retornaPet(idTesteOk, null, clienteOk), false);			
+		} catch (ServiceException e) {
+			Assert.assertEquals("Os atributos cliente e nome são obrigatórios.", e.getMessage());
+			return;
+		}
+		Assert.fail("Deveria ter lançado exceção.");
+	}
 	
+	@Test
+	public void save_SalvandoComClienteNulo_LancaExcecao() {		
+		try {
+			petService.save(retornaPet(idTesteOk, nomeOk, null), false);			
+		} catch (ServiceException e) {
+			Assert.assertEquals("Os atributos cliente e nome são obrigatórios.", e.getMessage());
+			return;
+		}
+		Assert.fail("Deveria ter lançado exceção.");
+	}
 	
+	@Test
+	public void save_SalvandoComCpfClienteNulo_LancaExcecao() {	
+		Cliente clienteSemCpf = new Cliente();
+		try {
+			petService.save(retornaPet(idTesteOk, nomeOk, clienteSemCpf), false);			
+		} catch (ServiceException e) {
+			Assert.assertEquals("Os atributos cliente e nome são obrigatórios.", e.getMessage());
+			return;
+		}
+		Assert.fail("Deveria ter lançado exceção.");
+	}
+	
+	@Test
+	public void save_AtualizandoComIdNulo_LancaExcecao() {		
+		try {
+			petService.save(retornaPet(null, nomeOk, clienteOk), true);			
+		} catch (ServiceException e) {
+			Assert.assertEquals("Na atualização, é necessário informar o id de um registro existente.", e.getMessage());
+			return;
+		}
+		Assert.fail("Deveria ter lançado exceção.");
+	}
+	
+	@Test
+	public void save_AtualizandoPetInexistente_LancaExcecao() {		
+		when(petRepository.exists(idTesteOk)).thenReturn(false);
+		try {
+			petService.save(retornaPet(null, nomeOk, clienteOk), true);			
+		} catch (ServiceException e) {
+			Assert.assertEquals("Na atualização, é necessário informar o id de um registro existente.", e.getMessage());
+			return;
+		}
+		Assert.fail("Deveria ter lançado exceção.");
+	}
 	
 	
 	@Test
@@ -127,14 +198,15 @@ public class PetServiceImplTest {
 	
 	
 	
-	private List<Pet> retornaLista(Long id) {
-		return Arrays.asList(retornaPet(id));
+	private List<Pet> retornaLista(Long id, String nome, Cliente cliente) {
+		return Arrays.asList(retornaPet(id, nome, cliente));
 	}
 	
-	private Pet retornaPet(Long id) {
+	private Pet retornaPet(Long id, String nome, Cliente cliente) {
 		Pet pet = new Pet();
 		pet.setId(id);
-		pet.setNome("Nome do pet");
+		pet.setNome(nome);
+		pet.setCliente(cliente);
 		
 		return pet;
 	}

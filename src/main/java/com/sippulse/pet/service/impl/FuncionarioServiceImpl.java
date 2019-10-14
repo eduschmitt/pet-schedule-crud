@@ -88,9 +88,8 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 				|| !isValidString(funcionario.getSenha()) || funcionario.getTipoFuncionario() == null) {
 			throw new ServiceException("Os atributos CPF, nome, senha e tipo são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
-		if (!isValidCpf(funcionario.getCpf().toString())) {
-			throw new ServiceException("CPF inválido.", TipoExcecao.VALIDACAO_CAMPOS);
-		}
+		isValidCpf(funcionario.getCpf().toString());
+
 		Boolean funcionarioExiste = repository.exists(funcionario.getCpf());
 		if (isUpdate && !funcionarioExiste) {
 			log.error("Registro informado para atualização não existe. Id = {}.", funcionario.getCpf());
