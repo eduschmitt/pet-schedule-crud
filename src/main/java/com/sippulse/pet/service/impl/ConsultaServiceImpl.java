@@ -50,11 +50,11 @@ public class ConsultaServiceImpl implements ConsultaService {
 	public List<Consulta> findAll() {
 		log.debug("Buscando todos os consultas.");
 		List<Consulta> consultas = (List<Consulta>) repository.findAll();
-		if (consultas == null) {
+		if (consultas == null || consultas.isEmpty()) {
 			log.error("Nenhum registro encontrado.");
 			throw new ServiceException("Nenhum registro encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
-		return (List<Consulta>) repository.findAll();
+		return consultas;
 	}
 
 	/**
@@ -101,7 +101,12 @@ public class ConsultaServiceImpl implements ConsultaService {
 	}
 
 	public List<Consulta> findByCliente(Long cpfCliente) {
-		return repository.findAllByPetClienteCpf(cpfCliente);
+		List<Consulta> consultas = repository.findAllByPetClienteCpf(cpfCliente);
+		if (consultas == null || consultas.isEmpty()) {
+			log.error("Nenhum registro encontrado.");
+			throw new ServiceException("Nenhum registro encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
+		}
+		return consultas;
 	}
 
 	/**

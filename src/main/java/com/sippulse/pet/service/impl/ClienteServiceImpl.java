@@ -41,7 +41,7 @@ public class ClienteServiceImpl implements ClienteService {
 	public List<Cliente> findAll() {
 		log.debug("Buscando todos os clientes.");
 		List<Cliente> clientes = (List<Cliente>) repository.findAll();
-		if (clientes == null) {
+		if (clientes == null || clientes.isEmpty()){
 			log.error("Nenhum registro encontrado.");
 			throw new ServiceException("Nenhum registro encontrado.", TipoExcecao.REGISTRO_NAO_ENCONTRADO);
 		}
@@ -83,9 +83,10 @@ public class ClienteServiceImpl implements ClienteService {
 		if (cliente.getCpf() == null || !isValidString(cliente.getNome()) || !isValidString(cliente.getTelefone())) {
 			throw new ServiceException("Os atributos CPF, nome e telefone são obrigatórios.", TipoExcecao.VALIDACAO_CAMPOS);
 		}
-		if (!isValidCpf(cliente.getCpf().toString())) {
-			throw new ServiceException("CPF inválido.", TipoExcecao.VALIDACAO_CAMPOS);
-		}
+		
+		// valida o CPF, lançando ServiceException se houve algum problema
+		isValidCpf(cliente.getCpf().toString());
+		
 		Boolean clienteExiste = repository.exists(cliente.getCpf()); 
 		if (isUpdate && !clienteExiste) {
 			log.error("Registro informado para atualização não existe. Id = {}.", cliente.getCpf());

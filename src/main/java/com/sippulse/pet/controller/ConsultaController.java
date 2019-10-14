@@ -47,7 +47,7 @@ public class ConsultaController {
 	}
 
 	@ApiOperation(value = "findAll")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = List.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success"),
 			@ApiResponse(code = 404, message = "Not Found"), @ApiResponse(code = 500, message = "Failure") })
 	@RequestMapping(method = RequestMethod.GET)
 	@JsonView(View.ConsultaComPetVeterinario.class)

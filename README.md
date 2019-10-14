@@ -1,11 +1,13 @@
 # Crud Spring Boot - Pet Schedule
 
-# Tecnologias
+# Tecnologias utilizadas
 - JAVA 1.8
 - Maven
 - Spring 
 - REST
 - MySQL
+- Swagger
+- Jackson (provida pelo spring-boot-starter-web)
 
 # Descrição Geral
  Este projeto é um modelo para agendamento de horários em um PetShop/Clinica Veterinária.
@@ -24,7 +26,7 @@
    * Todas as consultas devem ser realizadas através de API REST; 
    * O sistema deve ser desenvolvido usando a estrutura fornecida como exemplo;
    * O código deve ser documentado com JavaDoc;
-   * Os Endpoints REST devem estar documentados;
+   * Os Endpoints REST devem estar documentados (http://localhost:8080/swagger-ui.html);
    * Criar o Banco de Dados utilizando MySQL;
    * Enviar link do git com o código pronto;
 
