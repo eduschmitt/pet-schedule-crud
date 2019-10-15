@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    
+    <changeSet author="schmitt (generated)" id="1571136460370-10">
+        <insert tableName="pet">
+            <column name="id" valueNumeric="2"/>
+            <column name="idade" valueNumeric="4"/>
+            <column name="nome" value="GATO 1"/>
+            <column name="observacoes"/>
+            <column name="raca" value="Siamês"/>
+            <column name="tipo" value="GATO"/>
+            <column name="cpf_cliente" valueNumeric="96710386031"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-11">
+        <insert tableName="pet">
+            <column name="id" valueNumeric="3"/>
+            <column name="idade" valueNumeric="4"/>
+            <column name="nome" value="GATO 2"/>
+            <column name="observacoes"/>
+            <column name="raca" value="Vira-Latas"/>
+            <column name="tipo" value="GATO"/>
+            <column name="cpf_cliente" valueNumeric="96710386031"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-12">
+        <insert tableName="pet">
+            <column name="id" valueNumeric="4"/>
+            <column name="idade" valueNumeric="7"/>
+            <column name="nome" value="CACHORRO 1"/>
+            <column name="observacoes"/>
+            <column name="raca" value="Vira-Latas"/>
+            <column name="tipo" value="CACHORRO"/>
+            <column name="cpf_cliente" valueNumeric="31280914041"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-13">
+        <insert tableName="pet">
+            <column name="id" valueNumeric="5"/>
+            <column name="idade" valueNumeric="1"/>
+            <column name="nome" value="HAMSTER 1"/>
+            <column name="observacoes"/>
+            <column name="raca" value=""/>
+            <column name="tipo" value="HAMSTER"/>
+            <column name="cpf_cliente" valueNumeric="31280914041"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

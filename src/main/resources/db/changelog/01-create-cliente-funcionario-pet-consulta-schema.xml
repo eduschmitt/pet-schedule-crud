@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="schmitt (generated)" id="1571136163520-1">
+        <createTable tableName="cliente">
+            <column name="cpf" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sexo" type="CHAR(1)"/>
+            <column name="telefone" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-2">
+        <createTable tableName="consulta">
+            <column autoIncrement="true" name="id" type="BIGINT(19)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="data_hora" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="motivo_relatado" type="VARCHAR(255)"/>
+            <column name="id_pet" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cpf_veterinario" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-3">
+        <createTable tableName="funcionario">
+            <column name="cpf" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sexo" type="CHAR(1)"/>
+            <column name="senha" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tipo_funcionario" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-4">
+        <createTable tableName="pet">
+            <column autoIncrement="true" name="id" type="BIGINT(19)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="idade" type="INT(10)"/>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="observacoes" type="VARCHAR(255)"/>
+            <column name="raca" type="VARCHAR(255)"/>
+            <column name="tipo" type="VARCHAR(255)"/>
+            <column name="cpf_cliente" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-5">
+        <addPrimaryKey columnNames="cpf" constraintName="PRIMARY" tableName="cliente"/>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-6">
+        <addPrimaryKey columnNames="cpf" constraintName="PRIMARY" tableName="funcionario"/>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-7">
+        <addForeignKeyConstraint baseColumnNames="cpf_cliente" baseTableName="pet" constraintName="FK_3y87nqysge8x6i1w9bvw85all" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="cpf" referencedTableName="cliente"/>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-8">
+        <addForeignKeyConstraint baseColumnNames="id_pet" baseTableName="consulta" constraintName="FK_8w9hpsps774a94vrtdrag8woy" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="pet"/>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136163520-9">
+        <addForeignKeyConstraint baseColumnNames="cpf_veterinario" baseTableName="consulta" constraintName="FK_905i5178s9xwa77axx0beqmsy" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="cpf" referencedTableName="funcionario"/>
+    </changeSet>
+</databaseChangeLog>

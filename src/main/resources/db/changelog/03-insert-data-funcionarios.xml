@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    
+    <changeSet author="schmitt (generated)" id="1571136460370-7">
+        <insert tableName="funcionario">
+            <column name="cpf" valueNumeric="15106241049"/>
+            <column name="nome" value="VETERINARIO 2"/>
+            <column name="sexo" value="F"/>
+            <column name="senha" value="$2a$10$wjnAPcrrl7t28AEeJSdoBOkV3zcnAEWIM6U84TXHmEgw6fA.g.B2e"/>
+            <column name="tipo_funcionario" value="VETERINARIO"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-8">
+        <insert tableName="funcionario">
+            <column name="cpf" valueNumeric="19269098010"/>
+            <column name="nome" value="VETERINARIO 1"/>
+            <column name="sexo" value="M"/>
+            <column name="senha" value="$2a$10$wjnAPcrrl7t28AEeJSdoBOkV3zcnAEWIM6U84TXHmEgw6fA.g.B2e"/>
+            <column name="tipo_funcionario" value="VETERINARIO"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-9">
+        <insert tableName="funcionario">
+            <column name="cpf" valueNumeric="79616992015"/>
+            <column name="nome" value="FUNCIONARIO 1"/>
+            <column name="sexo" value="F"/>
+            <column name="senha" value="$2a$10$wjnAPcrrl7t28AEeJSdoBOkV3zcnAEWIM6U84TXHmEgw6fA.g.B2e"/>
+            <column name="tipo_funcionario" value="ATENDIMENTO"/>
+        </insert>
+    </changeSet>
+    
+</databaseChangeLog>

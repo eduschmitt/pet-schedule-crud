@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="schmitt (generated)" id="1571136460370-1">
+        <insert tableName="cliente">
+            <column name="cpf" valueNumeric="31280914041"/>
+            <column name="nome" value="CLIENTE 2"/>
+            <column name="sexo" value="M"/>
+            <column name="telefone" value="48987654321"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-2">
+        <insert tableName="cliente">
+            <column name="cpf" valueNumeric="96710386031"/>
+            <column name="nome" value="CLIENTE 1"/>
+            <column name="sexo" value="F"/>
+            <column name="telefone" value="48987654321"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

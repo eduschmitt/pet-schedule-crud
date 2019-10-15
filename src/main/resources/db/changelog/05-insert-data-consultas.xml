@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="schmitt (generated)" id="1571136460370-3">
+        <insert tableName="consulta">
+            <column name="id" valueNumeric="3"/>
+            <column name="data_hora" valueDate="2019-10-10 09:30:00.0"/>
+            <column name="motivo_relatado" value="Rotina"/>
+            <column name="id_pet" valueNumeric="3"/>
+            <column name="cpf_veterinario" valueNumeric="15106241049"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-4">
+        <insert tableName="consulta">
+            <column name="id" valueNumeric="4"/>
+            <column name="data_hora" valueDate="2019-10-24 19:30:00.0"/>
+            <column name="motivo_relatado" value="Vacinação"/>
+            <column name="id_pet" valueNumeric="2"/>
+            <column name="cpf_veterinario" valueNumeric="19269098010"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-5">
+        <insert tableName="consulta">
+            <column name="id" valueNumeric="6"/>
+            <column name="data_hora" valueDate="2019-10-24 19:45:00.0"/>
+            <column name="motivo_relatado" value="Pelos caindo"/>
+            <column name="id_pet" valueNumeric="4"/>
+            <column name="cpf_veterinario" valueNumeric="19269098010"/>
+        </insert>
+    </changeSet>
+    <changeSet author="schmitt (generated)" id="1571136460370-6">
+        <insert tableName="consulta">
+            <column name="id" valueNumeric="7"/>
+            <column name="data_hora" valueDate="2019-10-24 19:45:00.0"/>
+            <column name="motivo_relatado" value="Vacinação"/>
+            <column name="id_pet" valueNumeric="5"/>
+            <column name="cpf_veterinario" valueNumeric="15106241049"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
