@@ -83,15 +83,15 @@ public class ConsultaServiceImpl implements ConsultaService {
 	public List<Consulta> findByVeterinarioData(Long cpfVeterinario, LocalDate dataConsulta) {
 
 		if (cpfVeterinario != null && dataConsulta != null) {
-			log.error("Data inicio: {}", dataConsulta.atStartOfDay());
-			log.error("Data Fim: {}", dataConsulta.plusDays(1).atStartOfDay().minusMinutes(1));
+			log.info("Data inicio: {}", dataConsulta.atStartOfDay());
+			log.info("Data Fim: {}", dataConsulta.plusDays(1).atStartOfDay().minusMinutes(1));
 			return repository.findAllByVeterinarioCpfAndDataHoraBetween(cpfVeterinario, dataConsulta.atStartOfDay(),
 					dataConsulta.plusDays(1).atStartOfDay().minusMinutes(1));
 		} else if (cpfVeterinario != null) {
 			return repository.findAllByVeterinarioCpf(cpfVeterinario);
 		} else if (dataConsulta != null) {
-			log.error("Data inicio: {}", dataConsulta.atStartOfDay());
-			log.error("Data Fim: {}", dataConsulta.plusDays(1).atStartOfDay().minusMinutes(1));
+			log.info("Data inicio: {}", dataConsulta.atStartOfDay());
+			log.info("Data Fim: {}", dataConsulta.plusDays(1).atStartOfDay().minusMinutes(1));
 			return repository.findAllByDataHoraBetween(dataConsulta.atStartOfDay(),
 					dataConsulta.plusDays(1).atStartOfDay().minusMinutes(1));
 		} else {
